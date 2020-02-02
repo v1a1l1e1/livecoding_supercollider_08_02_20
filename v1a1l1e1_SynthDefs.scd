@@ -136,7 +136,7 @@ SynthDef(\kick,{
 	sig = sig*amp*env_sig;
 	sig = BPF.ar(sig, 60, 2.5);
 	sig = FreeVerb.ar(sig, mix, room);
-	Out.ar(out, sig);
+	Out.ar(out, Pan2.ar(sig,0));
 	DetectSilence.ar(sig, doneAction:2);
 }).add;
 

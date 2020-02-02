@@ -1,32 +1,34 @@
 ("v1a1l1e1_setup.scd").loadRelative;
-
+d.add(\scale -> Scale.chromatic(\et12));
+p.fadeTime=2;
+p.clock.tempo=2
 /* --KICK-- */
 
 /*
 ~k1 = Pbind(\instrument, \kick, \dur, Prand([0.5,0.25,1],inf));
 */
-~k1 = Pbind(\instrument, \kick, \dur, Pwrand([Pbjorklund2(Pseq([3,5],16),Prand([8,11],inf),16)/4,Prand([0.5,0.25,1],8)],[0.6,0.4],inf),\amp,Prand([2,1.5],inf));
-~k2 = Pbind(\instrument, \k, \dur, Pseq([1,0.5,],inf), \amp, 3);
+~k1 = Pbind(\instrument, \kick, \dur, Pwrand([Pbjorklund2(Pseq([3,5],16),Prand([8,11],inf),16)/4,Prand([0.5,0.25,1],8)],[0.6,0.4],inf),\amp,Prand([0.9,0.75],inf));
+~k2 = Pbind(\instrument, \k, \dur, Pseq([1,0.5,],inf), \amp, 1);
 ~k1.play;~k2.play;
 
 ~k3 = Pbind(\instrument, \kick3, \dur,4,\amp,6);
-~k3.play;
+~k3.stop;
 ~k2.stop
 
 /* --SNARE-- */
 
 ~bz = Pbind(\instrument, \bz, \dur, Pbjorklund(3,8)/2,\amp,0.4,\ocatve, 1, \scale, Scale.major,\degree, Prand([0,3,5],inf));
 ~bz2 = Pbind(\instrument, \bz, \scale, Scale.major, \degree, Prand([2,4,7],inf), \dur, Pbjorklund(3,8,inf,3), \ocatve, 2,\amp, 0.4);
-~bz.stop; ~bz2.stop;
+~bz.play; ~bz2.play;
 
 /* --BASS-- */
 
-~b = Pbind(\instrument, \bass, \scale, d[\scale], \degree, Pseq([1,[3,5],4,6,8,0,2,4,[5,7],3],inf),\octave,Prand([2,3],inf), \dur, Pbjorklund2(Pseq([3,5],inf),8)/4, \amp,0.2);
-~b.stop(2);
+~bass = Pbind(\instrument, \bass2,\dur,Pseq([0.5,1,0.5,0.25,1,0.5],inf),\scale, d[\scale], \degree, Pseq([1,3,5,4,6,8,0,2,4,5,7,3],inf),\octave,Prand([3,4],inf));
+~bass.play
 
 /* --HIHAT-- */
 ~hh = Pbind(\instrument, \hh, \dur, Prand([2,4],inf), \amp, Prand([0.3,0.5],inf));
-~hh.stop(3);
+~hh.play;
 
 /* --CLAP-- */
 
@@ -53,7 +55,7 @@ d.add(\scale -> Scale.chromatic(\et12));
 ~d1 = Pbind(\instrument, \82, \dur, 0.5, \amp, 0.6, \base_freq, Prand([2,3,4],inf), \freq_l,Pwhite(0.5,2.5), \freq_r,Pkey(\freq_l)*1.01);
 ~d1.stop(40);
 
-~mu = Pbind(\instrument, \mu, \scale, d[\scale], \degree, Prand(d[\scale].degrees,inf), \octave, Prand([2,3,4],inf), \dur, 2);
+~mu = Pbind(\instrument, \mu, \scale, d[\scale], \degree, Prand(d[\scale].degrees,inf), \octave, Prand([2,3,4],inf), \dur, 2,\amp,0.5);
 ~mu.play;
 
 ~mu.stop(10);
@@ -68,7 +70,7 @@ d.add(\scale -> Scale.chromatic(\et12));
 ~sp.play;
 
 ~flt = {RHPF.ar([~sp.ar],SinOsc.kr(0.01).range(20,500),LFNoise1.kr(0.1).range(0.01,0.1),0.2)};
-~flt.stop(4);
+~flt.play;
 
 ~dly={CombC.ar([~sfb.ar],1,LFNoise1.kr(0.1).range(0.1,0.3),2)}
 ~dly.play;~sp.stop;
